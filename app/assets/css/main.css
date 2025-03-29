@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@import "@nuxt/ui-pro";
+
+@theme {
+  --font-display: "Inter", "sans-serif";
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+}
