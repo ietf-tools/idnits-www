@@ -19,7 +19,7 @@
         headline="v3.0.0"
         orientation="horizontal"
         :links="heroLinks"
-        >
+      >
         <img src="~/assets/img/logo.svg" alt="" style="max-height: 15em;">
       </UPageHero>
       <USeparator label="Built with ❤️ by the IETF Tools Team" />

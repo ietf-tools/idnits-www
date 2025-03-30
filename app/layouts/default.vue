@@ -33,7 +33,6 @@
       </UDashboardSidebar>
 
       <slot />
-    
     </UDashboardGroup>
   </UApp>
 </template>
@@ -65,7 +64,10 @@ const links = [[{
 }, {
   label: 'Settings',
   to: '/settings',
-  icon: 'i-lucide-cog'
+  icon: 'i-lucide-cog',
+  onSelect: () => {
+    open.value = false
+  }
 }], [{
   label: 'Feedback',
   icon: 'i-lucide-message-circle',

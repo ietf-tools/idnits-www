@@ -2,30 +2,37 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2024-11-01',
-  css: ['~/assets/css/main.css'],
+  modules: [
+    '@nuxt/eslint',
+    '@nuxt/icon',
+    '@nuxt/ui-pro',
+    '@pinia/nuxt',
+    'pinia-plugin-persistedstate/nuxt',
+    'reka-ui/nuxt'
+  ],
   devtools: {
     enabled: true
   },
-  eslint: {
-    config: {
-      stylistic: {
-        commaDangle: 'never'
-      }
-    }
-  },
+  css: ['~/assets/css/main.css'],
   future: {
     compatibilityVersion: 4
   },
-  modules: [
-    'reka-ui/nuxt',
-    '@nuxt/eslint',
-    '@nuxt/icon',
-    '@nuxt/ui-pro'
-  ],
+  compatibilityDate: '2024-11-01',
   vite: {
     plugins: [
       tailwindcss()
     ]
+  },
+  eslint: {
+    config: {
+      stylistic: {
+        braceStyle: '1tbs',
+        commaDangle: 'never'
+      }
+    }
+  },
+  piniaPluginPersistedstate: {
+    key: 'idnits_%id',
+    storage: 'localStorage'
   }
 })

@@ -50,9 +50,9 @@
               label="Default Validation Mode"
               description="The validation mode to use by default."
               class="flex items-center justify-between not-last:pb-4 gap-2"
-              >
+            >
               <USelect
-                v-model="state.defaultValidationMode"
+                v-model="siteStore.defaultValidationMode"
                 :items="validationModes"
                 class="w-44"
               />
@@ -63,9 +63,9 @@
               label="Offline Only"
               description="Disable validation checks that require connection to remote APIs."
               class="flex items-center justify-between not-last:pb-4 gap-2"
-              >
+            >
               <USwitch
-                v-model="state.offline"
+                v-model="siteStore.offline"
               />
             </UFormField>
           </UPageCard>
@@ -75,15 +75,15 @@
   </UDashboardPanel>
 </template>
 
-<script setup lang="ts">
-const state = reactive({
-  offline: false,
-  defaultValidationMode: 'normal'
-})
+<script setup>
+import { MODES } from '@ietf-tools/idnits'
+import { useSiteStore } from '@/stores/site'
+
+const siteStore = useSiteStore()
 
 const validationModes = ref([
-  { label: 'Normal', value: 'normal' },
-  { label: 'Forgive Checklist', value: 'forgive-checklist' },
-  { label: 'Submission', value: 'submission' }
+  { label: 'Normal', value: MODES.NORMAL },
+  { label: 'Forgive Checklist', value: MODES.FORGIVE_CHECKLIST },
+  { label: 'Submission', value: MODES.SUBMISSION }
 ])
 </script>

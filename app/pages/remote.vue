@@ -13,7 +13,7 @@
     </template>
 
     <template #body>
-      <span>This service inspects Internet-Draft (I-D) documents for conditions that should be adjusted to bring the document into line with policies from the IETF, the IETF Trust, and the RFC Editor.</span>
+      <em>Coming soon</em>
     </template>
   </UDashboardPanel>
 </template>
