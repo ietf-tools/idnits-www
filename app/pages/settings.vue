@@ -45,14 +45,14 @@
 
           <UPageCard variant="subtle" :ui="{ container: 'divide-y divide-(--ui-border)' }">
             <UFormField
-              key="defaultMode"
-              name="Default Validation Mode"
-              label="Default Validation Mode"
-              description="The validation mode to use by default."
+              key="validationMode"
+              name="Validation Mode"
+              label="Validation Mode"
+              description="The mode to use when validating Internet-Drafts."
               class="flex items-center justify-between not-last:pb-4 gap-2"
             >
               <USelect
-                v-model="siteStore.defaultValidationMode"
+                v-model="siteStore.mode"
                 :items="validationModes"
                 class="w-44"
               />

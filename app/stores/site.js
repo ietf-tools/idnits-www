@@ -4,10 +4,10 @@ import { getAllValidations, MODES, ALLOWED_DOMAINS_DEFAULT } from '@ietf-tools/i
 export const useSiteStore = defineStore('site', {
   state: () => ({
     offline: false,
-    defaultValidationMode: MODES.NORMAL,
     mode: MODES.NORMAL,
     nits: [],
     results: [],
+    resultGroups: [],
     filename: '',
     history: [],
     error: ''
@@ -15,7 +15,10 @@ export const useSiteStore = defineStore('site', {
   actions: {
     async validate(raw, filename) {
       this.results = []
+      this.resultGroups = []
       this.nits = []
+      this.filename = filename
+      this.error = ''
 
       const ext = filename.endsWith('.xml') ? 'xml' : 'txt'
       const ctx = {
@@ -31,24 +34,47 @@ export const useSiteStore = defineStore('site', {
 
       const validations = getAllValidations(ext)
 
-      // let idx = 0
       try {
+        let grpIdx = 0
+        let taskIdx = 0
         for (const valGroup of validations) {
+          this.resultGroups.push({
+            key: valGroup.key,
+            title: valGroup.title,
+            tasks: []
+          })
           for (const valTask of valGroup.tasks) {
-            const taskResult = await valTask.task(ctx)
-            console.info(ctx)
-            if (!valTask.isVoid && Array.isArray(taskResult)) {
-              this.results.push(...taskResult)
+            const taskResults = await valTask.task(ctx)
+            const taskObj = {
+              key: valTask.key,
+              title: valTask.title,
+              nits: [],
+              group: grpIdx
             }
+            this.resultGroups[grpIdx].tasks.push(taskObj)
+            this.results.push(taskObj)
+            if (!valTask.isVoid && Array.isArray(taskResults)) {
+              for (const taskResult of taskResults) {
+                const nit = {
+                  taskIdx,
+                  ...taskResult
+                }
+                this.results[taskIdx].nits.push(nit)
+                this.nits.push(nit)
+              }
+            }
+            taskIdx++
           }
+          grpIdx++
         }
       } catch (err) {
+        console.warn(err)
         this.error = err.message
       }
       console.info(this.results)
     }
   },
   persist: {
-    pick: ['offline', 'defaultValidationMode']
+    pick: ['offline', 'mode']
   }
 })
