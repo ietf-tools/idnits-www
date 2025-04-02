@@ -1,18 +1,13 @@
 <template>
-  <UDashboardPanel id="upload">
-    <template #header>
-      <UDashboardNavbar title="Validate File" :ui="{ right: 'gap-3' }">
-        <template #leading>
-          <UDashboardSidebarCollapse />
-        </template>
+  <div class="flex flex-col min-w-0 min-h-svh lg:not-last:border-r lg:not-last:border-(--ui-border) flex-1">
+    <div class="h-18 shrink-0 flex items-center justify-between border-b border-(--ui-border) px-4 sm:px-6 gap-1.5">
+      <div class="flex items-center gap-3">
+        <UIcon name="i-lucide-file-up" />
+        <h1 class="flex items-center gap-1.5 font-semibold text-(--ui-text-highlighted) truncate">Validate File</h1>
+      </div>
+    </div>
 
-        <template #right>
-          <UColorModeButton />
-        </template>
-      </UDashboardNavbar>
-    </template>
-
-    <template #body>
+    <div class="flex flex-col gap-4 sm:gap-6 flex-1 overflow-y-auto p-4 sm:p-6">
       <span>Select an Internet-Draft to validate, in either XML or plain text (TXT) format:</span>
       <div>
         <div
@@ -29,8 +24,8 @@
         </div>
       </div>
       <input ref="uplFile" type="file" :accept="allowedTypes.join(', ')" class="hidden" @change="browseFileSelected">
-    </template>
-  </UDashboardPanel>
+    </div>
+  </div>
 </template>
 
 <script setup>

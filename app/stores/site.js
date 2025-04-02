@@ -3,8 +3,11 @@ import { getAllValidations, MODES, ALLOWED_DOMAINS_DEFAULT } from '@ietf-tools/i
 
 export const useSiteStore = defineStore('site', {
   state: () => ({
+    theme: 'system',
     offline: false,
     mode: MODES.NORMAL,
+    useCurrentYear: true,
+    customYear: new Date().getFullYear(),
     nits: [],
     results: [],
     resultGroups: [],
@@ -75,6 +78,6 @@ export const useSiteStore = defineStore('site', {
     }
   },
   persist: {
-    pick: ['offline', 'mode']
+    pick: ['theme', 'offline', 'mode', 'useCurrentYear', 'customYear']
   }
 })

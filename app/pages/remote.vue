@@ -1,19 +1,14 @@
 <template>
-  <UDashboardPanel id="remote">
-    <template #header>
-      <UDashboardNavbar title="Validate Remote URL" :ui="{ right: 'gap-3' }">
-        <template #leading>
-          <UDashboardSidebarCollapse />
-        </template>
+  <div class="flex flex-col min-w-0 min-h-svh lg:not-last:border-r lg:not-last:border-(--ui-border) flex-1">
+    <div class="h-18 shrink-0 flex items-center justify-between border-b border-(--ui-border) px-4 sm:px-6 gap-1.5">
+      <div class="flex items-center gap-3">
+        <UIcon name="i-lucide-cloud-download" />
+        <h1 class="flex items-center gap-1.5 font-semibold text-(--ui-text-highlighted) truncate">Validate Remote URL</h1>
+      </div>
+    </div>
 
-        <template #right>
-          <UColorModeButton />
-        </template>
-      </UDashboardNavbar>
-    </template>
-
-    <template #body>
+    <div class="flex flex-col gap-4 sm:gap-6 flex-1 overflow-y-auto p-4 sm:p-6">
       <em>Coming soon</em>
-    </template>
-  </UDashboardPanel>
+    </div>
+  </div>
 </template>

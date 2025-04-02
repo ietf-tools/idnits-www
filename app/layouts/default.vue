@@ -1,73 +1,47 @@
 <template>
   <UApp>
-    <UDashboardGroup>
-      <UDashboardSearch :groups="groups" />
+    <div class="fixed inset-0 flex overflow-hidden">
+      <div class="hidden lg:flex flex-col min-h-svh min-w-16 w-72 shrink-0 border-r border-(--ui-border) bg-(--ui-bg-elevated)/25">
+        <div class="h-18 shrink-0 flex items-center gap-1.5 px-4">
+          <ToolsMenu />
+        </div>
 
-      <UDashboardSidebar
-        v-model:open="open"
-        collapsible
-        resizable
-        class="bg-(--ui-bg-elevated)/25"
-        :ui="{ footer: 'lg:border-t lg:border-(--ui-border)' }"
-      >
-        <template #header="{ collapsed }">
-          <ToolsMenu :collapsed="collapsed" />
-        </template>
-
-        <template #default="{ collapsed }">
-          <UDashboardSearchButton :collapsed="collapsed" label="Command Palette..." class="bg-transparent ring-(--ui-border)" />
-
+        <div class="flex flex-col gap-4 flex-1 overflow-y-auto px-4 py-2">
           <UNavigationMenu
-            :collapsed="collapsed"
             :items="links[0]"
             orientation="vertical"
           />
 
           <UNavigationMenu
-            :collapsed="collapsed"
             :items="links[1]"
             orientation="vertical"
             class="mt-auto"
           />
-        </template>
-      </UDashboardSidebar>
+        </div>
+      </div>
 
       <slot />
-    </UDashboardGroup>
+    </div>
   </UApp>
 </template>
 
 <script setup>
-const open = ref(false)
-
 const links = [[{
   label: 'Overview',
   icon: 'i-lucide-house',
-  to: '/',
-  onSelect: () => {
-    open.value = false
-  }
+  to: '/'
 }, {
   label: 'Validate File',
   icon: 'i-lucide-file-up',
-  to: '/upload',
-  onSelect: () => {
-    open.value = false
-  }
+  to: '/upload'
 }, {
   label: 'Validate Remote URL',
   icon: 'i-lucide-cloud-download',
-  to: '/remote',
-  onSelect: () => {
-    open.value = false
-  }
+  to: '/remote'
 }, {
   label: 'Settings',
   to: '/settings',
-  icon: 'i-lucide-cog',
-  onSelect: () => {
-    open.value = false
-  }
+  icon: 'i-lucide-cog'
 }], [{
   label: 'Feedback',
   icon: 'i-lucide-message-circle',
@@ -79,18 +53,4 @@ const links = [[{
   to: 'https://github.com/ietf-tools/idnits',
   target: '_blank'
 }]]
-
-const groups = computed(() => [{
-  id: 'links',
-  label: 'Go to',
-  items: links.flat()
-}, {
-  id: 'history',
-  label: 'History',
-  items: [{
-    id: 'past-results',
-    label: 'View Last Validation Results',
-    icon: 'i-lucide-file-clock'
-  }]
-}])
 </script>

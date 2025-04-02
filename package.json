@@ -14,7 +14,6 @@
     "@ietf-tools/idnits": "3.0.0-alpha.42",
     "@nuxt/icon": "1.11.0",
     "@nuxt/ui": "3.0.1",
-    "@nuxt/ui-pro": "3.0.1",
     "@pinia/nuxt": "0.10.1",
     "@tailwindcss/vite": "4.0.17",
     "@vueuse/core": "13.0.0",

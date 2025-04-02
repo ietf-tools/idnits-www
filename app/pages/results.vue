@@ -1,18 +1,13 @@
 <template>
-  <UDashboardPanel id="results">
-    <template #header>
-      <UDashboardNavbar title="Validation Results" :ui="{ right: 'gap-3' }">
-        <template #leading>
-          <UDashboardSidebarCollapse />
-        </template>
+  <div class="flex flex-col min-w-0 min-h-svh lg:not-last:border-r lg:not-last:border-(--ui-border) flex-1">
+    <div class="h-18 shrink-0 flex items-center justify-between border-b border-(--ui-border) px-4 sm:px-6 gap-1.5">
+      <div class="flex items-center gap-3">
+        <UIcon name="i-lucide-cog" />
+        <h1 class="flex items-center gap-1.5 font-semibold text-(--ui-text-highlighted) truncate">Validation Results</h1>
+      </div>
+    </div>
 
-        <template #right>
-          <UColorModeButton />
-        </template>
-      </UDashboardNavbar>
-    </template>
-
-    <template #body>
+    <div class="flex flex-col gap-4 sm:gap-6 flex-1 overflow-y-auto p-4 sm:p-6">
       <div v-if="siteStore.error">
         <UAlert
           title="Fatal Error"
@@ -25,7 +20,7 @@
         />
       </div>
       <div class="col-span-1 flex rounded-md shadow-sm dark:shadow-white/5">
-        <div :class="['bg-pink-600 flex w-16 shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white']">XML</div>
+        <div :class="['bg-pink-600 flex w-16 shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white']">{{ fileExt }}</div>
         <div class="flex flex-1 items-center justify-between truncate rounded-r-md border-t border-r border-b border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800">
           <div class="flex-1 truncate px-4 py-2 text-sm">
             <strong class="font-medium text-zinc-900 dark:text-zinc-300">{{ siteStore.filename }}</strong>
@@ -72,8 +67,8 @@
           </div>
         </div>
       </div>
-    </template>
-  </UDashboardPanel>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -104,4 +99,8 @@ const severities = [{
 const selectedSeverity = ref('all')
 
 const selectedTaskKey = ref('')
+
+const fileExt = computed(() => {
+  return siteStore.filename?.split('.').at(-1).toUpperCase() || '???'
+})
 </script>
