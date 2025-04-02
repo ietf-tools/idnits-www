@@ -11,7 +11,7 @@
       <div data-orientation="horizontal" class="relative isolate">
         <div class="max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:grid py-24 sm:py-32 lg:py-40 gap-16 sm:gap-y-24 lg:grid-cols-2 lg:items-center">
           <div class="">
-            <div class="mb-4 font-semibold text-(--ui-primary) flex items-center gap-1.5">v3.0.0</div>
+            <div class="mb-4 font-semibold text-(--ui-primary) flex items-center gap-1.5">v{{ runtimeConfig.public.idnitsVersion }}</div>
             <h1 class="text-5xl sm:text-7xl text-pretty tracking-tight font-bold text-(--ui-text-highlighted)">I-D Nits</h1>
             <div class="text-lg sm:text-xl/8 text-(--ui-text-muted) text-pretty mt-6">This tool inspects Internet-Draft (I-D) documents for conditions that should be adjusted to bring the document into line with policies from the IETF, the IETF Trust, and the RFC Editor.</div>
             <div class="mt-10 flex flex-wrap gap-x-6 gap-y-3">
@@ -29,6 +29,8 @@
 </template>
 
 <script setup>
+const runtimeConfig = useRuntimeConfig()
+
 const footerLinks = ref([
   {
     label: 'IETF',

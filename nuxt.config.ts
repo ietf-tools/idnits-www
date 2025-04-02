@@ -1,4 +1,7 @@
+import fs from 'node:fs/promises'
 import tailwindcss from '@tailwindcss/vite'
+
+const packageInfo = JSON.parse(await fs.readFile('package.json', 'utf-8'))
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -14,6 +17,11 @@ export default defineNuxtConfig({
     enabled: true
   },
   css: ['~/assets/css/main.css'],
+  runtimeConfig: {
+    public: {
+      idnitsVersion: packageInfo.dependencies['@ietf-tools/idnits']
+    }
+  },
   future: {
     compatibilityVersion: 4
   },
@@ -34,5 +42,5 @@ export default defineNuxtConfig({
   piniaPluginPersistedstate: {
     key: 'idnits_%id',
     storage: 'localStorage'
-  }
+  },
 })
