@@ -10,9 +10,9 @@
     <div class="flex flex-col gap-4 sm:gap-6 flex-1 overflow-y-auto p-4 sm:p-6">
       <div class="flex flex-col gap-4 sm:gap-6 lg:gap-12 w-full lg:max-w-2xl mx-auto">
         <div>
-          <div class="text-base text-pretty font-semibold text-(--ui-text-highlighted)">General</div>
-          <div class="text-[15px] text-pretty text-(--ui-text-muted) mt-1">Common site settings</div>
-          <UCard class="mt-4" variant="subtle" :ui="{ container: 'divide-y divide-(--ui-border)' }">
+          <div class="text-base text-pretty font-semibold text-(--ui-text-highlighted)">Appearance</div>
+          <div class="text-[15px] text-pretty text-(--ui-text-muted) mt-1">User Interface and color settings</div>
+          <UCard class="mt-4" variant="subtle" :ui="{ body: 'divide-y divide-(--ui-border) flex flex-col flex-1 gap-y-4' }">
             <UFormField
               key="colorMode"
               name="Color Theme"
@@ -21,9 +21,20 @@
               class="flex items-center justify-between not-last:pb-4 gap-2"
             >
               <USelect
-                v-model="siteStore.theme"
+                v-model="colorMode.preference"
                 :items="themes"
                 class="w-44"
+              />
+            </UFormField>
+            <UFormField
+              key="showPerf"
+              name="Display Performance Metrics"
+              label="Display Performance Metrics"
+              description="Show the time duration for each validation group / tasks."
+              class="flex items-center justify-between not-last:pb-4 gap-2"
+            >
+              <USwitch
+                v-model="siteStore.showPerf"
               />
             </UFormField>
           </UCard>
@@ -90,6 +101,7 @@ import { MODES } from '@ietf-tools/idnits'
 import { useSiteStore } from '@/stores/site'
 
 const siteStore = useSiteStore()
+const colorMode = useColorMode()
 
 const themes = ref([
   { label: 'System', value: 'system', icon: 'i-lucide-monitor' },

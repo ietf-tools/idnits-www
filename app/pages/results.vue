@@ -20,13 +20,13 @@
         />
       </div>
       <div class="col-span-1 flex rounded-md shadow-sm dark:shadow-white/5">
-        <div :class="['bg-pink-600 flex w-16 shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white']">{{ fileExt }}</div>
+        <div :class="['bg-secondary-500 flex w-16 shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white']">{{ fileExt }}</div>
         <div class="flex flex-1 items-center justify-between truncate rounded-r-md border-t border-r border-b border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800">
           <div class="flex-1 truncate px-4 py-2 text-sm">
             <strong class="font-medium text-zinc-900 dark:text-zinc-300">{{ siteStore.filename }}</strong>
             <p class="text-zinc-400">Validation Mode: <strong>{{ validationModes[siteStore.mode] }}</strong></p>
           </div>
-          <div class="shrink-0 pr-2">
+          <!-- <div class="shrink-0 pr-2">
             <UTabs
               v-model="selectedSeverity"
               :items="severities"
@@ -34,20 +34,22 @@
               :content="false"
               size="sm"
             />
-          </div>
+          </div> -->
         </div>
       </div>
 
       <div v-for="grp of siteStore.resultGroups" :key="grp.key" class="pb-2 border-b border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-700 rounded-md shadow-sm dark:shadow-white/5">
-        <div class="px-4 py-5 flex flex-wrap items-center justify-between sm:flex-nowrap">
+        <div class="pl-4 pr-6 py-5 flex flex-wrap items-center justify-between sm:flex-nowrap">
           <div class="flex items-center justify-between pl-1">
             <UIcon class="mr-2" name="i-lucide-list-tree" />
             <h3 class="text-base font-semibold text-zinc-500 dark:text-zinc-200">{{ grp.title }}</h3>
           </div>
-          <div class="shrink-0">
-            Test
+          <div class="shrink-0 text-xs">
+            <span v-if="siteStore.showPerf" class="mr-2">{{ grp.perf }} ms</span>
+            <UBadge :variant="grp.nitsTotal > 0 ? 'solid' : 'soft'" :color="grp.nitsTotal > 0 ? 'error' : 'success'" :label="grp.nitsTotal || '0'" />
           </div>
         </div>
+        <UProgress v-if="grp.state === 'pending'" size="2xs" />
         <div class="overflow-y-auto divide-y divide-(--ui-border) bg-zinc-50 dark:bg-zinc-800">
           <div v-for="task of grp.tasks" :key="task.key">
             <div
@@ -62,7 +64,14 @@
               <UIcon v-else name="i-lucide-circle-check" size="18" class="mr-2 text-success-500" />
               <span class="font-semibold">{{ task.title }}</span>
               <div class="flex-auto" />
-              <UBadge variant="solid" :color="task.nits.length > 0 ? 'error' : 'success'" :label="task.nits.length || '0'" />
+              <UIcon v-if="task.state === 'pending'" name="i-lucide-circle-dashed" class="animate-spin mr-2" />
+              <span v-if="siteStore.showPerf && task.state === 'completed'" class="text-xs mr-2 text-black/40 dark:text-white/40">{{ task.perf }} ms</span>
+              <UBadge :variant="task.nits.length > 0 ? 'solid' : 'soft'" :color="task.nits.length > 0 ? 'error' : 'success'" :label="task.nits.length || '0'" />
+            </div>
+            <div v-if="task.state === 'completed' && task.nits.length > 0" class="border-t-2 border-error-500 bg-error-500/20 py-4 px-6 text-sm">
+              <div v-for="(nit, idx) of task.nits" :key="idx">
+                {{ nit }}
+              </div>
             </div>
           </div>
         </div>
