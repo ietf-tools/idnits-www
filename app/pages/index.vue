@@ -22,13 +22,15 @@
           <img src="~/assets/img/logo.svg" alt="" style="max-height: 15em;">
         </div>
       </div>
-      <USeparator label="Built with ❤️ by the IETF Tools Team" />
+      <USeparator>Built with <span class="mx-1 cursor-pointer" @click="triggerConfetti">❤️</span> by the IETF Tools Team</USeparator>
       <UNavigationMenu color="neutral" :items="footerLinks" class="w-full justify-center" />
     </div>
   </div>
 </template>
 
 <script setup>
+import confetti from 'canvas-confetti'
+
 const runtimeConfig = useRuntimeConfig()
 
 const footerLinks = ref([
@@ -58,4 +60,37 @@ const footerLinks = ref([
     icon: 'i-lucide-laptop-minimal-check'
   }
 ])
+
+function triggerConfetti() {
+  function fire(particleRatio, opts) {
+    confetti({
+      ...opts,
+      origin: { y: 0.5, x: 0.55 },
+      particleCount: Math.floor(200 * particleRatio)
+    })
+  }
+
+  fire(0.25, {
+    spread: 26,
+    startVelocity: 55
+  })
+  fire(0.2, {
+    spread: 60
+  })
+  fire(0.35, {
+    spread: 100,
+    decay: 0.91,
+    scalar: 0.8
+  })
+  fire(0.1, {
+    spread: 120,
+    startVelocity: 25,
+    decay: 0.92,
+    scalar: 1.2
+  })
+  fire(0.1, {
+    spread: 120,
+    startVelocity: 45
+  })
+}
 </script>

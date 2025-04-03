@@ -8,7 +8,7 @@
     </div>
 
     <div class="flex flex-col gap-4 sm:gap-6 flex-1 overflow-y-auto p-4 sm:p-6">
-      <div class="flex flex-col gap-4 sm:gap-6 lg:gap-12 w-full lg:max-w-2xl mx-auto">
+      <div class="flex flex-col gap-4 sm:gap-6 lg:gap-12 w-full lg:max-w-3xl mx-auto">
         <div>
           <div class="text-base text-pretty font-semibold text-(--ui-text-highlighted)">Appearance</div>
           <div class="text-[15px] text-pretty text-(--ui-text-muted) mt-1">User Interface and color settings</div>

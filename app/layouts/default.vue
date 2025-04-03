@@ -12,6 +12,17 @@
             orientation="vertical"
           />
 
+          <USeparator />
+
+          <UButton
+            icon="i-lucide-download"
+            label="Download CLI"
+            variant="subtle"
+            color="secondary"
+            to="https://github.com/ietf-tools/idnits/tree/v3?tab=readme-ov-file#installation"
+            target="_blank"
+          />
+
           <UNavigationMenu
             :items="links[1]"
             orientation="vertical"

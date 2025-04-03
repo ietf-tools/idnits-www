@@ -17,6 +17,7 @@
     "@pinia/nuxt": "0.10.1",
     "@tailwindcss/vite": "4.0.17",
     "@vueuse/core": "13.0.0",
+    "canvas-confetti": "1.9.3",
     "nuxt": "3.16.1",
     "pinia": "3.0.1",
     "pinia-plugin-persistedstate": "4.2.0",

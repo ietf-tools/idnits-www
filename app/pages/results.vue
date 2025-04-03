@@ -26,15 +26,6 @@
             <strong class="font-medium text-zinc-900 dark:text-zinc-300">{{ siteStore.filename }}</strong>
             <p class="text-zinc-400">Validation Mode: <strong>{{ validationModes[siteStore.mode] }}</strong></p>
           </div>
-          <!-- <div class="shrink-0 pr-2">
-            <UTabs
-              v-model="selectedSeverity"
-              :items="severities"
-              class="w-90"
-              :content="false"
-              size="sm"
-            />
-          </div> -->
         </div>
       </div>
 
@@ -53,12 +44,10 @@
         <div class="overflow-y-auto divide-y divide-(--ui-border) bg-zinc-50 dark:bg-zinc-800">
           <div v-for="task of grp.tasks" :key="task.key">
             <div
-              class="p-4 sm:px-6 text-sm cursor-pointer border-l-2 transition-colors flex items-center"
+              class="p-4 sm:px-6 text-sm border-l-2 transition-colors flex items-center"
               :class="[
-                task.nits.length > 0 ? 'text-error-600 dark:text-error-400 border-error-500 bg-error-500/10' : 'text-success-700 dark:text-success-200 border-success-500 bg-success-500/10',
-                selectedTaskKey === task.key ? 'border-(--ui-primary) bg-(--ui-primary)/10' : 'border-(--ui-bg) hover:border-(--ui-primary) hover:bg-(--ui-primary)/5'
+                task.nits.length > 0 ? 'text-error-600 dark:text-error-400 border-error-500 bg-error-500/10' : 'text-success-700 dark:text-success-200 border-success-500 bg-success-500/10'
               ]"
-              @click="selectedTaskKey = task.key"
             >
               <UIcon v-if="task.nits.length > 0" name="i-lucide-triangle-alert" size="18" class="mr-2" />
               <UIcon v-else name="i-lucide-circle-check" size="18" class="mr-2 text-success-500" />
@@ -68,9 +57,27 @@
               <span v-if="siteStore.showPerf && task.state === 'completed'" class="text-xs mr-2 text-black/40 dark:text-white/40">{{ task.perf }} ms</span>
               <UBadge :variant="task.nits.length > 0 ? 'solid' : 'soft'" :color="task.nits.length > 0 ? 'error' : 'success'" :label="task.nits.length || '0'" />
             </div>
-            <div v-if="task.state === 'completed' && task.nits.length > 0" class="border-t-2 border-error-500 bg-error-500/20 py-4 px-6 text-sm">
-              <div v-for="(nit, idx) of task.nits" :key="idx">
-                {{ nit }}
+            <div v-if="task.state === 'completed' && task.nits.length > 0" class="flex flex-col gap-2 border-t-2 border-r-2 border-error-500 bg-error-500/20 py-2 px-2 text-sm">
+              <div v-for="(nit, idx) of task.nits" :key="idx" class="bg-white/50 dark:bg-black/20 rounded-md p-4">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center">
+                    <UBadge :label="nit.name" variant="soft" color="error" class="mr-2" />
+                    {{ nit.message }}
+                  </div>
+                  <UButton v-if="nit.refUrl" :to="nit.refUrl" target="_blank" label="Reference" variant="subtle" color="neutral" icon="i-lucide-book-text" trailing-icon="i-lucide-arrow-up-right" />
+                </div>
+                <div v-if="nit.lines" class="flex items-center gap-2 mt-2 pl-2">
+                  <span class="text-error-100 text-xs">LINES |</span>
+                  <UBadge v-for="(ln, lnIdx) of nit.lines" :key="lnIdx" size="sm" class="bg-black/50 text-error-100" :label="'Ln ' + ln.line + ', Col ' + ln.pos" />
+                </div>
+                <div v-if="nit.path" class="flex items-center mt-2 pl-2">
+                  <span class="text-error-100 text-xs mr-1">PATH |</span>
+                  <div class="font-mono">{{ nit.path }}</div>
+                </div>
+                <div v-if="nit.text" class="flex items-center mt-2 pl-2">
+                  <span class="text-error-100 text-xs mr-1">TEXT |</span>
+                  <div class="font-mono">{{ nit.text }}</div>
+                </div>
               </div>
             </div>
           </div>
@@ -91,21 +98,6 @@ const validationModes = {
   [MODES.FORGIVE_CHECKLIST]: 'Forgive Checklist',
   [MODES.SUBMISSION]: 'Submission'
 }
-
-const severities = [{
-  label: 'All',
-  value: 'all'
-}, {
-  label: 'Errors',
-  value: 'errors'
-}, {
-  label: 'Warnings',
-  value: 'warnings'
-}, {
-  label: 'Comments',
-  value: 'comments'
-}]
-const selectedSeverity = ref('all')
 
 const selectedTaskKey = ref('')
 

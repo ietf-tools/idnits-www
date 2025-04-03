@@ -87,7 +87,6 @@ export const useSiteStore = defineStore('site', {
         console.warn(err)
         this.error = err.message
       }
-      console.info(this.results)
     }
   },
   persist: {

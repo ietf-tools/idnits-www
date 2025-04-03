@@ -7,7 +7,7 @@
       </div>
     </div>
 
-    <div class="flex flex-col gap-4 sm:gap-6 flex-1 overflow-y-auto p-4 sm:p-6">
+    <div class="flex flex-col gap-4 sm:gap-6 flex-1 overflow-y-auto p-4 sm:p-6 w-full lg:max-w-4xl mx-auto">
       <span>Select an Internet-Draft to validate, in either XML or plain text (TXT) format:</span>
       <div>
         <div
@@ -24,11 +24,31 @@
         </div>
       </div>
       <input ref="uplFile" type="file" :accept="allowedTypes.join(', ')" class="hidden" @change="browseFileSelected">
+
+      <UCard variant="subtle" :ui="{ body: 'divide-y divide-(--ui-border) flex flex-col flex-1 gap-y-4' }">
+        <UFormField
+          key="validationMode"
+          name="Validation Mode"
+          label="Validation Mode"
+          description="The mode to use when validating Internet-Drafts."
+          class="flex items-center justify-between not-last:pb-4 gap-2"
+        >
+          <USelect
+            v-model="siteStore.mode"
+            :items="validationModes"
+            class="w-44"
+          />
+        </UFormField>
+      </UCard>
+      <div class="flex justify-end">
+        <UButton label="More Settings" icon="i-lucide-cog" variant="subtle" color="secondary" size="sm" to="/settings" />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { MODES } from '@ietf-tools/idnits'
 import { useDropZone } from '@vueuse/core'
 import { useSiteStore } from '@/stores/site'
 
@@ -54,4 +74,10 @@ async function browseFileSelected() {
     navigateTo('/results')
   }
 }
+
+const validationModes = ref([
+  { label: 'Normal', value: MODES.NORMAL },
+  { label: 'Forgive Checklist', value: MODES.FORGIVE_CHECKLIST },
+  { label: 'Submission', value: MODES.SUBMISSION }
+])
 </script>
