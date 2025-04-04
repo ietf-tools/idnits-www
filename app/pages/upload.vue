@@ -12,9 +12,9 @@
       <div>
         <div
           ref="dropzone"
-          :class="['flex flex-col w-full min-h-50 h-auto bg-gray-300/10 justify-center items-center rounded-xl shadow-md outline', isOverDropZone ? 'outline-emerald-500 shadow-emerald-500/50' : 'outline-white/25']"
+          :class="['flex flex-col w-full min-h-50 h-auto bg-gray-300/10 justify-center items-center rounded-xl shadow-md outline p-4', isOverDropZone ? 'outline-emerald-500 shadow-emerald-500/50' : 'outline-white/25']"
         >
-          <div>
+          <div class="text-center">
             <strong>Drag and drop an Internet-Draft here</strong> (.xml, .txt)
           </div>
           <span class="my-3 text-gray-400">or</span>
@@ -70,7 +70,7 @@ const { isOverDropZone } = useDropZone(dropzoneRef, {
 
 async function browseFileSelected() {
   if (uplFileRef.value.files?.length) {
-    siteStore.validate(await uplFileRef.value.files[0].arrayBuffer(), uplFileRef.value.files[0].name)
+    siteStore.validate(new Uint8Array(await uplFileRef.value.files[0].arrayBuffer()), uplFileRef.value.files[0].name)
     navigateTo('/results')
   }
 }

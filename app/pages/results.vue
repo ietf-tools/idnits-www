@@ -46,16 +46,16 @@
             <div
               class="p-4 sm:px-6 text-sm border-l-2 transition-colors flex items-center"
               :class="[
-                task.nits.length > 0 ? 'border-2 text-white dark:text-error-50 border-error-500 bg-error-600/70 dark:bg-error-500/50' : 'text-success-700 dark:text-success-200 border-success-500 bg-success-500/10'
+                task.nits.length > 0 || task.state === 'failed' ? 'border-2 text-white dark:text-error-50 border-error-500 bg-error-600/70 dark:bg-error-500/50' : 'text-success-700 dark:text-success-200 border-success-500 bg-success-500/10'
               ]"
             >
-              <UIcon v-if="task.nits.length > 0" name="i-lucide-triangle-alert" size="18" class="mr-2" />
+              <UIcon v-if="task.nits.length > 0 || task.state === 'failed'" name="i-lucide-triangle-alert" size="18" class="mr-2" />
               <UIcon v-else name="i-lucide-circle-check" size="18" class="mr-2 text-success-500" />
               <span class="font-semibold">{{ task.title }}</span>
               <div class="flex-auto" />
               <UIcon v-if="task.state === 'pending'" name="i-lucide-circle-dashed" class="animate-spin mr-2" />
               <span v-if="siteStore.showPerf && task.state === 'completed'" class="text-xs mr-2 text-black/60 dark:text-white/60">{{ task.perf }} ms</span>
-              <UBadge :variant="task.nits.length > 0 ? 'solid' : 'soft'" :color="task.nits.length > 0 ? 'error' : 'success'" :label="task.nits.length || '0'" />
+              <UBadge :variant="task.nits.length > 0 || task.state === 'failed' ? 'solid' : 'soft'" :color="task.nits.length > 0 || task.state === 'failed' ? 'error' : 'success'" :label="task.nits.length || '0'" />
             </div>
             <div v-if="task.state === 'completed' && task.nits.length > 0" class="flex flex-col gap-2 bg-error-500/20 py-2 px-2 text-sm">
               <div v-for="(nit, idx) of task.nits" :key="idx" class="bg-white/50 dark:bg-black/20 rounded-md p-4">
