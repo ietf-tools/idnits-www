@@ -46,7 +46,7 @@
             <div
               class="p-4 sm:px-6 text-sm border-l-2 transition-colors flex items-center"
               :class="[
-                task.nits.length > 0 ? 'text-error-600 dark:text-error-400 border-error-500 bg-error-500/10' : 'text-success-700 dark:text-success-200 border-success-500 bg-success-500/10'
+                task.nits.length > 0 ? 'border-2 text-white dark:text-error-50 border-error-500 bg-error-600/70 dark:bg-error-500/50' : 'text-success-700 dark:text-success-200 border-success-500 bg-success-500/10'
               ]"
             >
               <UIcon v-if="task.nits.length > 0" name="i-lucide-triangle-alert" size="18" class="mr-2" />
@@ -54,28 +54,29 @@
               <span class="font-semibold">{{ task.title }}</span>
               <div class="flex-auto" />
               <UIcon v-if="task.state === 'pending'" name="i-lucide-circle-dashed" class="animate-spin mr-2" />
-              <span v-if="siteStore.showPerf && task.state === 'completed'" class="text-xs mr-2 text-black/40 dark:text-white/40">{{ task.perf }} ms</span>
+              <span v-if="siteStore.showPerf && task.state === 'completed'" class="text-xs mr-2 text-black/60 dark:text-white/60">{{ task.perf }} ms</span>
               <UBadge :variant="task.nits.length > 0 ? 'solid' : 'soft'" :color="task.nits.length > 0 ? 'error' : 'success'" :label="task.nits.length || '0'" />
             </div>
-            <div v-if="task.state === 'completed' && task.nits.length > 0" class="flex flex-col gap-2 border-t-2 border-r-2 border-error-500 bg-error-500/20 py-2 px-2 text-sm">
+            <div v-if="task.state === 'completed' && task.nits.length > 0" class="flex flex-col gap-2 bg-error-500/20 py-2 px-2 text-sm">
               <div v-for="(nit, idx) of task.nits" :key="idx" class="bg-white/50 dark:bg-black/20 rounded-md p-4">
                 <div class="flex items-center justify-between">
                   <div class="flex items-center">
-                    <UBadge :label="nit.name" variant="soft" color="error" class="mr-2" />
+                    <UBadge :label="getNitType(nit).name" variant="soft" :color="getNitType(nit).color" class="mr-2 font-bold" />
+                    <UBadge :label="nit.name" variant="soft" color="error" class="mr-2 text-error-800 dark:text-error-200" />
                     {{ nit.message }}
                   </div>
                   <UButton v-if="nit.refUrl" :to="nit.refUrl" target="_blank" label="Reference" variant="subtle" color="neutral" icon="i-lucide-book-text" trailing-icon="i-lucide-arrow-up-right" />
                 </div>
                 <div v-if="nit.lines" class="flex items-center gap-2 mt-2 pl-2">
-                  <span class="text-error-100 text-xs">LINES |</span>
-                  <UBadge v-for="(ln, lnIdx) of nit.lines" :key="lnIdx" size="sm" class="bg-black/50 text-error-100" :label="'Ln ' + ln.line + ', Col ' + ln.pos" />
+                  <span class="text-error-600 dark:text-error-100 text-xs">LINES |</span>
+                  <UBadge v-for="(ln, lnIdx) of nit.lines" :key="lnIdx" size="sm" class="bg-black/50 text-white dark:text-error-100" :label="'Ln ' + ln.line + ', Col ' + ln.pos" />
                 </div>
                 <div v-if="nit.path" class="flex items-center mt-2 pl-2">
-                  <span class="text-error-100 text-xs mr-1">PATH |</span>
-                  <div class="font-mono">{{ nit.path }}</div>
+                  <span class="text-error-600 dark:text-error-100 text-xs mr-1">PATH |</span>
+                  <UBadge class="font-mono bg-black/50 text-white dark:text-error-100" :label="nit.path" />
                 </div>
                 <div v-if="nit.text" class="flex items-center mt-2 pl-2">
-                  <span class="text-error-100 text-xs mr-1">TEXT |</span>
+                  <span class="text-error-600 dark:text-error-100 text-xs mr-1">TEXT |</span>
                   <div class="font-mono">{{ nit.text }}</div>
                 </div>
               </div>
@@ -88,7 +89,7 @@
 </template>
 
 <script setup>
-import { MODES } from '@ietf-tools/idnits'
+import { MODES, ValidationComment, ValidationError, ValidationWarning } from '@ietf-tools/idnits'
 import { useSiteStore } from '@/stores/site'
 
 const siteStore = useSiteStore()
@@ -99,9 +100,31 @@ const validationModes = {
   [MODES.SUBMISSION]: 'Submission'
 }
 
-const selectedTaskKey = ref('')
-
 const fileExt = computed(() => {
   return siteStore.filename?.split('.').at(-1).toUpperCase() || '???'
 })
+
+function getNitType(nit) {
+  if (nit instanceof ValidationComment) {
+    return {
+      name: 'Comment',
+      color: 'info'
+    }
+  } else if (nit instanceof ValidationError) {
+    return {
+      name: 'Error',
+      color: 'error'
+    }
+  } else if (nit instanceof ValidationWarning) {
+    return {
+      name: 'Warning',
+      color: 'warning'
+    }
+  } else {
+    return {
+      name: 'Unknown',
+      color: 'neutral'
+    }
+  }
+}
 </script>
