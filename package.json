@@ -11,7 +11,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@ietf-tools/idnits": "3.0.0-alpha.42",
+    "@ietf-tools/idnits": "3.0.0-alpha.44",
     "@nuxt/icon": "1.11.0",
     "@nuxt/ui": "3.0.1",
     "@pinia/nuxt": "0.10.1",
@@ -31,5 +31,8 @@
     "@nuxt/eslint": "1.2.0",
     "@types/node": "22.13.17",
     "eslint": "9.23.0"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }
