@@ -30,7 +30,8 @@
     "@iconify-json/lucide": "1.2.33",
     "@nuxt/eslint": "1.2.0",
     "@types/node": "22.13.17",
-    "eslint": "9.23.0"
+    "eslint": "9.23.0",
+    "wrangler": "4.7.2"
   },
   "engines": {
     "node": ">=22"

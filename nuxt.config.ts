@@ -42,5 +42,5 @@ export default defineNuxtConfig({
   piniaPluginPersistedstate: {
     key: 'idnits_%id',
     storage: 'localStorage'
-  },
+  }
 })
