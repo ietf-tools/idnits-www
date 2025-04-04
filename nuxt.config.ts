@@ -16,6 +16,9 @@ export default defineNuxtConfig({
   devtools: {
     enabled: true
   },
+  app: {
+    baseURL: '/idnits3/'
+  },
   css: ['~/assets/css/main.css'],
   runtimeConfig: {
     public: {
