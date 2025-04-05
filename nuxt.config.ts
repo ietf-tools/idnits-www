@@ -17,8 +17,7 @@ export default defineNuxtConfig({
     enabled: true
   },
   app: {
-    baseURL: '/idnits3/',
-    buildAssetsDir: '/_nuxt/'
+    baseURL: '/idnits3/'
   },
   css: ['~/assets/css/main.css'],
   runtimeConfig: {
@@ -31,9 +30,6 @@ export default defineNuxtConfig({
   },
   compatibilityDate: '2024-11-01',
   vite: {
-    build: {
-      assetsDir: '_nuxt/'
-    },
     plugins: [
       tailwindcss()
     ]
