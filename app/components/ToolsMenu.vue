@@ -35,7 +35,7 @@ const items = [
     label: 'idnits',
     // icon: 'i-lucide-radar',
     avatar: {
-      src: '/logo.svg'
+      src: '/idnits3/logo.svg'
     }
   },
   {
