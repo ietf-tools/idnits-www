@@ -3,6 +3,7 @@ import { getAllValidations, MODES, ALLOWED_DOMAINS_DEFAULT } from '@ietf-tools/i
 
 export const useSiteStore = defineStore('site', {
   state: () => ({
+    mobileSidebarOpen: false,
     theme: 'system',
     showPerf: true,
     offline: false,

@@ -1,6 +1,35 @@
 <template>
   <UApp>
     <div class="fixed inset-0 flex overflow-hidden">
+      <!-- Mobile -->
+      <USlideover v-model:open="siteStore.mobileSidebarOpen" side="left">
+        <template #content>
+          <div class="h-18 shrink-0 flex items-center gap-1.5 px-4">
+            <ToolsMenu />
+            <USeparator orientation="vertical" class="mx-3" />
+            <UButton class="cursor-pointer" icon="i-lucide-x" size="lg" color="neutral" variant="subtle" @click="siteStore.mobileSidebarOpen = false" />
+          </div>
+
+          <div class="flex flex-col gap-4 flex-1 overflow-y-auto px-4 py-2">
+            <UNavigationMenu
+              :items="links[0]"
+              orientation="vertical"
+              :ui="{ link: 'text-lg' }"
+            />
+
+            <USeparator />
+
+            <UNavigationMenu
+              :items="links[1]"
+              orientation="vertical"
+              class="mt-auto"
+              :ui="{ link: 'text-md' }"
+            />
+          </div>
+        </template>
+      </USlideover>
+
+      <!-- Desktop -->
       <div class="hidden lg:flex flex-col min-h-svh min-w-16 w-72 shrink-0 border-r border-(--ui-border) bg-(--ui-bg-elevated)/25">
         <div class="h-18 shrink-0 flex items-center gap-1.5 px-4">
           <ToolsMenu />
@@ -37,22 +66,38 @@
 </template>
 
 <script setup>
+import { useSiteStore } from '@/stores/site'
+
+const siteStore = useSiteStore()
+
 const links = [[{
   label: 'Overview',
   icon: 'i-lucide-house',
-  to: '/'
+  to: '/',
+  onSelect() {
+    siteStore.mobileSidebarOpen = false
+  }
 }, {
   label: 'Validate File',
   icon: 'i-lucide-file-up',
-  to: '/upload'
+  to: '/upload',
+  onSelect() {
+    siteStore.mobileSidebarOpen = false
+  }
 }, {
   label: 'Validate Remote URL',
   icon: 'i-lucide-cloud-download',
-  to: '/remote'
+  to: '/remote',
+  onSelect() {
+    siteStore.mobileSidebarOpen = false
+  }
 }, {
   label: 'Settings',
   to: '/settings',
-  icon: 'i-lucide-cog'
+  icon: 'i-lucide-cog',
+  onSelect() {
+    siteStore.mobileSidebarOpen = false
+  }
 }], [{
   label: 'Feedback',
   icon: 'i-lucide-message-circle',

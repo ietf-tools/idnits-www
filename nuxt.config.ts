@@ -11,7 +11,8 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
-    'reka-ui/nuxt'
+    'reka-ui/nuxt',
+    'nuxt-viewport'
   ],
   devtools: {
     enabled: true

@@ -19,6 +19,7 @@
     "@vueuse/core": "13.0.0",
     "canvas-confetti": "1.9.3",
     "nuxt": "3.16.1",
+    "nuxt-viewport": "2.2.0",
     "pinia": "3.0.1",
     "pinia-plugin-persistedstate": "4.2.0",
     "reka-ui": "2.1.1",

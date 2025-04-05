@@ -3,8 +3,12 @@
     <div class="h-18 shrink-0 flex items-center justify-between border-b border-(--ui-border) px-4 sm:px-6 gap-1.5">
       <div class="flex items-center gap-3">
         <UIcon name="i-lucide-house" />
-        <h1 class="flex items-center gap-1.5 font-semibold text-(--ui-text-highlighted) truncate">Overview</h1>
+        <h1 class="flex flex-col items-left font-semibold truncate">
+          <span class="lg:hidden text-xs text-primary-500 uppercase">idnits</span>
+          Overview
+        </h1>
       </div>
+      <ToggleMobileMenuBtn />
     </div>
 
     <div class="flex flex-col gap-4 sm:gap-6 flex-1 overflow-y-auto p-4 sm:p-6">
@@ -23,7 +27,7 @@
         </div>
       </div>
       <USeparator>Built with <span class="mx-1 cursor-pointer" @click="triggerConfetti">❤️</span> by the IETF Tools Team</USeparator>
-      <UNavigationMenu color="neutral" :items="footerLinks" class="w-full justify-center" />
+      <UNavigationMenu :orientation="viewport.isLessThan('tablet') ? 'vertical' : 'horizontal'" color="neutral" :items="footerLinks" class="w-full justify-center" />
     </div>
   </div>
 </template>
@@ -32,6 +36,7 @@
 import confetti from 'canvas-confetti'
 
 const runtimeConfig = useRuntimeConfig()
+const viewport = useViewport()
 
 const footerLinks = ref([
   {

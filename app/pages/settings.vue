@@ -3,8 +3,12 @@
     <div class="h-18 shrink-0 flex items-center justify-between border-b border-(--ui-border) px-4 sm:px-6 gap-1.5">
       <div class="flex items-center gap-3">
         <UIcon name="i-lucide-cog" />
-        <h1 class="flex items-center gap-1.5 font-semibold text-(--ui-text-highlighted) truncate">Settings</h1>
+        <h1 class="flex flex-col items-left font-semibold truncate">
+          <span class="lg:hidden text-xs text-primary-500 uppercase">idnits</span>
+          Settings
+        </h1>
       </div>
+      <ToggleMobileMenuBtn />
     </div>
 
     <div class="flex flex-col gap-4 sm:gap-6 flex-1 overflow-y-auto p-4 sm:p-6">
