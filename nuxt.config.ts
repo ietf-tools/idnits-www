@@ -32,7 +32,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   vite: {
     build: {
-      assetsDir: 'idnits3/_nuxt/'
+      assetsDir: '_nuxt/'
     },
     plugins: [
       tailwindcss()
