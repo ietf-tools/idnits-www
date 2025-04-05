@@ -10,7 +10,7 @@
         trailingIcon: collapsed ? undefined : 'i-lucide-chevrons-up-down'
       }"
       :avatar="{
-        src: '/logo.svg'
+        src: '/idnits3/logo.svg'
       }"
       color="neutral"
       variant="ghost"
