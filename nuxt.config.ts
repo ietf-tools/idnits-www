@@ -18,7 +18,7 @@ export default defineNuxtConfig({
   },
   app: {
     baseURL: '/idnits3/',
-    buildAssetsDir: '/idnits3/_nuxt/'
+    buildAssetsDir: '/_nuxt/'
   },
   css: ['~/assets/css/main.css'],
   runtimeConfig: {
