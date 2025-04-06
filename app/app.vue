@@ -35,8 +35,8 @@ useSeoMeta({
   description,
   ogTitle: title,
   ogDescription: description,
-  ogImage: 'https://dashboard-template.nuxt.dev/social-card.png',
-  twitterImage: 'https://dashboard-template.nuxt.dev/social-card.png',
+  ogImage: 'https://author-tools.ietf.org/idnits3/social-card.png',
+  twitterImage: 'https://author-tools.ietf.org/idnits3/social-card.png',
   twitterCard: 'summary_large_image'
 })
 </script>

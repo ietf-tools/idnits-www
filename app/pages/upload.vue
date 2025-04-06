@@ -44,7 +44,7 @@
           />
         </UFormField>
       </UCard>
-      <div class="flex justify-end">
+      <div class="flex justify-between">
         <UButton label="More Settings" icon="i-lucide-cog" variant="subtle" color="secondary" size="sm" to="/settings" />
       </div>
     </div>
