@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getAllValidations, MODES, ALLOWED_DOMAINS_DEFAULT } from '@ietf-tools/idnits'
+import { getAllValidations, ValidationComment, ValidationError, ValidationWarning, MODES, ALLOWED_DOMAINS_DEFAULT } from '@ietf-tools/idnits'
 
 export const useSiteStore = defineStore('site', {
   state: () => ({
@@ -12,17 +12,28 @@ export const useSiteStore = defineStore('site', {
     customYear: new Date().getFullYear(),
     results: [],
     resultGroups: [],
+    nitsTotal: 0,
+    nitsByType: {
+      error: 0,
+      warning: 0,
+      comment: 0
+    },
     filename: '',
     history: [],
-    error: ''
+    error: '',
+    validating: false
   }),
   actions: {
     async validate(raw, filename) {
       this.results = []
       this.resultGroups = []
-      this.nits = []
+      this.nitsTotal = 0
+      this.nitsByType.error = 0
+      this.nitsByType.warning = 0
+      this.nitsByType.comment = 0
       this.filename = filename
       this.error = ''
+      this.validating = true
 
       const ext = filename.endsWith('.xml') ? 'xml' : 'txt'
       const ctx = {
@@ -43,6 +54,9 @@ export const useSiteStore = defineStore('site', {
         let taskIdx = 0
         for (const valGroup of validations) {
           performance.mark(`${valGroup.key}_start`)
+          if (valGroup.condition && !valGroup.condition(ctx)) {
+            continue
+          }
           this.resultGroups.push({
             key: valGroup.key,
             title: valGroup.title,
@@ -68,6 +82,17 @@ export const useSiteStore = defineStore('site', {
               if (!valTask.isVoid && Array.isArray(taskResults)) {
                 this.results[taskIdx].nits.push(...taskResults)
                 this.resultGroups[grpIdx].nitsTotal += taskResults.length
+
+                this.nitsTotal++
+                for (const nit of taskResults) {
+                  if (nit instanceof ValidationComment) {
+                    this.nitsByType.comment++
+                  } else if (nit instanceof ValidationError) {
+                    this.nitsByType.error++
+                  } else if (nit instanceof ValidationWarning) {
+                    this.nitsByType.warning++
+                  }
+                }
               }
               this.results[taskIdx].state = 'completed'
             } catch (err) {
@@ -88,6 +113,7 @@ export const useSiteStore = defineStore('site', {
         console.warn(err)
         this.error = err.message
       }
+      this.validating = false
     }
   },
   persist: {

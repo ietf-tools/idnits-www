@@ -2,7 +2,7 @@
   <div class="flex flex-col min-w-0 min-h-svh lg:not-last:border-r lg:not-last:border-(--ui-border) flex-1">
     <div class="h-18 shrink-0 flex items-center justify-between border-b border-(--ui-border) px-4 sm:px-6 gap-1.5">
       <div class="flex items-center gap-3">
-        <UIcon name="i-lucide-cog" />
+        <UIcon name="i-lucide-list-checks" />
         <h1 class="flex flex-col items-left font-semibold truncate">
           <span class="lg:hidden text-xs text-primary-500 uppercase">idnits</span>
           Validation Results
@@ -16,7 +16,7 @@
         <UAlert
           title="Fatal Error"
           :description="siteStore.error"
-          icon="i-lucide-circle-x"
+          icon="i-lucide-octagon-x"
           color="error"
           :ui="{
             icon: 'text-3xl'
@@ -24,13 +24,64 @@
         />
       </div>
       <div class="col-span-1 flex rounded-md shadow-sm dark:shadow-white/5">
-        <div :class="['bg-secondary-500 flex w-16 shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white']">{{ fileExt }}</div>
+        <div :class="['bg-secondary-500 flex w-16 shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white']">
+          <UIcon v-if="siteStore.validating" name="i-lucide-circle-dashed" class="text-white text-3xl animate-spin" />
+          <span v-else>{{ fileExt }}</span>
+        </div>
         <div class="flex flex-1 items-center justify-between truncate rounded-r-md border-t border-r border-b border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800">
           <div class="flex-1 truncate px-4 py-2 text-sm">
             <strong class="font-medium text-zinc-900 dark:text-zinc-300">{{ siteStore.filename }}</strong>
             <p class="text-zinc-400">Validation Mode: <strong>{{ validationModes[siteStore.mode] }}</strong></p>
           </div>
         </div>
+      </div>
+
+      <div v-if="siteStore.nitsTotal > 0">
+        <UAlert
+          v-if="siteStore.nitsByType.error > 0"
+          title="Document has nits"
+          :description="'Review the ' + siteStore.nitsByType.error + ' error(s) listed below. ' + (siteStore.nitsByType.warning > 0 ? 'There are ' + siteStore.nitsByType.warning + ' warning(s). ' : '') + (siteStore.nitsByType.comment > 0 ? 'Also, there are ' + siteStore.nitsByType.comment + ' comment(s).' : '')"
+          icon="i-lucide-octagon-alert"
+          color="error"
+          variant="subtle"
+          :ui="{
+            icon: 'text-3xl'
+          }"
+        />
+        <UAlert
+          v-else-if="siteStore.nitsByType.warning > 0"
+          title="Document has nits, just a few warnings!"
+          :description="'Review the ' + siteStore.nitsByType.warning + ' warning(s) listed below. ' + (siteStore.nitsByType.comment > 0 ? 'Also, there are ' + siteStore.nitsByType.comment + ' comment(s).' : '')"
+          icon="i-lucide-triangle-alert"
+          color="warning"
+          variant="subtle"
+          :ui="{
+            icon: 'text-3xl'
+          }"
+        />
+        <UAlert
+          v-else
+          title="Document has nits"
+          :description="'Review the ' + siteStore.nitsByType.comment + ' comment(s) listed below.'"
+          icon="i-lucide-message-circle-warning"
+          color="info"
+          variant="subtle"
+          :ui="{
+            icon: 'text-3xl'
+          }"
+        />
+      </div>
+      <div v-else>
+        <UAlert
+          title="Document is valid!"
+          description="No nits found during validation."
+          icon="i-lucide-party-popper"
+          color="success"
+          variant="subtle"
+          :ui="{
+            icon: 'text-3xl'
+          }"
+        />
       </div>
 
       <div v-for="grp of siteStore.resultGroups" :key="grp.key" class="pb-2 border-b border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-700 rounded-md shadow-sm dark:shadow-white/5">

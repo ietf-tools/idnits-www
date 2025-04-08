@@ -52,6 +52,14 @@
             target="_blank"
           />
 
+          <div v-if="showResults">
+            <USeparator class="mb-4" />
+            <UNavigationMenu
+              :items="resultLinks"
+              orientation="vertical"
+            />
+          </div>
+
           <UNavigationMenu
             :items="links[1]"
             orientation="vertical"
@@ -68,7 +76,12 @@
 <script setup>
 import { useSiteStore } from '@/stores/site'
 
+const route = useRoute()
 const siteStore = useSiteStore()
+
+const showResults = computed(() => {
+  return route.name === 'results'
+})
 
 const links = [[{
   label: 'Overview',
@@ -109,4 +122,15 @@ const links = [[{
   to: 'https://github.com/ietf-tools/idnits',
   target: '_blank'
 }]]
+
+const resultLinks = [
+  {
+    label: 'Results',
+    icon: 'i-lucide-list-checks',
+    to: '/results',
+    onSelect() {
+      siteStore.mobileSidebarOpen = false
+    }
+  }
+]
 </script>
