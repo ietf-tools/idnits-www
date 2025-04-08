@@ -11,18 +11,30 @@
       <ToggleMobileMenuBtn />
     </div>
 
-    <div class="flex flex-col gap-4 sm:gap-6 flex-1 overflow-y-auto p-4 sm:p-6">
-      <div v-if="siteStore.error">
-        <UAlert
-          title="Fatal Error"
-          :description="siteStore.error"
-          icon="i-lucide-octagon-x"
-          color="error"
-          :ui="{
-            icon: 'text-3xl'
-          }"
-        />
+    <div v-if="siteStore.fetching">
+      <UProgress size="2xs" :ui="{ base: 'rounded-none' }" />
+      <div class="flex items-center p-6 gap-4">
+        <UIcon name="i-lucide-cloud-download" class="text-2xl" />
+        <div class="flex flex-col">
+          <span class="italic">Fetching remote document</span>
+          <span class="text-xs text-primary-500">Please wait...</span>
+        </div>
       </div>
+    </div>
+
+    <div v-if="siteStore.error" class="p-6 pb-0">
+      <UAlert
+        title="Fatal Error"
+        :description="siteStore.error"
+        icon="i-lucide-octagon-x"
+        color="error"
+        :ui="{
+          icon: 'text-3xl'
+        }"
+      />
+    </div>
+
+    <div v-if="siteStore.filename" class="flex flex-col gap-4 sm:gap-6 flex-1 overflow-y-auto p-4 sm:p-6">
       <div class="col-span-1 flex rounded-md shadow-sm dark:shadow-white/5">
         <div :class="['bg-secondary-500 flex w-16 shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white']">
           <UIcon v-if="siteStore.validating" name="i-lucide-circle-dashed" class="text-white text-3xl animate-spin" />
@@ -146,6 +158,10 @@
 <script setup>
 import { MODES, ValidationComment, ValidationError, ValidationWarning } from '@ietf-tools/idnits'
 import { useSiteStore } from '@/stores/site'
+
+definePageMeta({
+  middleware: ['results']
+})
 
 const siteStore = useSiteStore()
 

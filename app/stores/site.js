@@ -21,6 +21,7 @@ export const useSiteStore = defineStore('site', {
     filename: '',
     history: [],
     error: '',
+    fetching: false,
     validating: false
   }),
   actions: {
@@ -114,6 +115,37 @@ export const useSiteStore = defineStore('site', {
         this.error = err.message
       }
       this.validating = false
+    },
+    async fetchRemoteDoc(docUrl) {
+      if (docUrl.length < 10 || !docUrl.startsWith('http')) {
+        throw new Error('Enter a valid URL to an Internet-Draft.')
+      }
+      if (!(docUrl.endsWith('.xml') || docUrl.endsWith('.txt'))) {
+        throw new Error('Must be an Internet-Draft ending in .txt or .xml.')
+      }
+
+      this.fetching = true
+
+      const resp = await fetch('/idnits3/api/remote', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          url: docUrl
+        })
+      })
+      if (resp.status !== 200) {
+        const respJson = await resp.json()
+        throw new Error(respJson.message)
+      }
+      const doc = await resp.text()
+      const enc = new TextEncoder()
+      const filename = docUrl.split('/').at(-1)
+
+      this.fetching = false
+
+      return [new Uint8Array(enc.encode(doc)), filename]
     }
   },
   persist: {

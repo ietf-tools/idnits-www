@@ -61,32 +61,15 @@ const draftUrl = ref('')
 
 async function validate() {
   try {
-    if (draftUrl.value.length < 10 || !draftUrl.value.startsWith('http')) {
-      throw new Error('Enter a valid URL to an Internet-Draft.')
-    }
-    if (!(draftUrl.value.endsWith('.xml') || draftUrl.value.endsWith('.txt'))) {
-      throw new Error('Must be an Internet-Draft ending in .txt or .xml.')
-    }
+    const docData = await siteStore.fetchRemoteDoc(draftUrl.value)
 
-    const resp = await fetch('/idnits3/api/remote', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
+    siteStore.validate(docData[0], docData[1])
+    navigateTo({
+      name: 'results',
+      query: {
         url: draftUrl.value
-      })
+      }
     })
-    if (resp.status !== 200) {
-      const respJson = await resp.json()
-      throw new Error(respJson.message)
-    }
-    const doc = await resp.text()
-    const enc = new TextEncoder()
-    const filename = draftUrl.value.split('/').at(-1)
-
-    siteStore.validate(new Uint8Array(enc.encode(doc)), filename)
-    navigateTo('/results')
   } catch (err) {
     console.warn(err)
     toast.add({

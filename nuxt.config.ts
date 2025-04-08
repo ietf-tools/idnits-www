@@ -26,6 +26,9 @@ export default defineNuxtConfig({
       idnitsVersion: packageInfo.dependencies['@ietf-tools/idnits']
     }
   },
+  routeRules: {
+    '/results': { ssr: false }
+  },
   future: {
     compatibilityVersion: 4
   },
