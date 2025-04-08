@@ -19,7 +19,7 @@
           key="draftUrl"
           name="Internet-Draft URL"
           label="Internet-Draft URL"
-          description="The mode to use when validating Internet-Drafts."
+          description="Full URL to the document to validate. Note that only URLs from authorized domains are accepted. Download the CLI to validate any URL."
           class=" not-last:pb-4"
         >
           <UInput
