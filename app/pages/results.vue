@@ -82,6 +82,19 @@
             icon: 'text-3xl'
           }"
         />
+        <UAlert
+          v-if="viewport.isLessThan('tablet')"
+          size="xs"
+          class="mt-4"
+          title="Limited View"
+          description="Run on desktop / tablet to get more detailed insights about each nit."
+          icon="i-lucide-monitor-smartphone"
+          color="warning"
+          variant="outline"
+          :ui="{
+            icon: 'text-3xl'
+          }"
+        />
       </div>
       <div v-else>
         <UAlert
@@ -97,13 +110,13 @@
       </div>
 
       <div v-for="grp of siteStore.resultGroups" :key="grp.key" class="pb-2 border-b border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-700 rounded-md shadow-sm dark:shadow-white/5">
-        <div class="pl-4 pr-6 py-5 flex flex-wrap items-center justify-between sm:flex-nowrap">
-          <div class="flex items-center justify-between pl-1">
+        <div class="px-4 sm:pr-6 py-5 flex items-center justify-between sm:flex-nowrap">
+          <div class="flex items-center justify-between px-1 truncate">
             <UIcon class="mr-2" name="i-lucide-list-tree" />
-            <h3 class="text-base font-semibold text-zinc-500 dark:text-zinc-200">{{ grp.title }}</h3>
+            <h3 class="text-base font-semibold truncate text-zinc-500 dark:text-zinc-200">{{ grp.title }}</h3>
           </div>
-          <div class="shrink-0 text-xs">
-            <span v-if="siteStore.showPerf" class="mr-2">{{ grp.perf }} ms</span>
+          <div class="shrink-0 text-xs flex items-center">
+            <span v-if="siteStore.showPerf" class="hidden md:block mr-2">{{ grp.perf }} ms</span>
             <UBadge :variant="grp.nitsTotal > 0 ? 'solid' : 'soft'" :color="grp.nitsTotal > 0 ? 'error' : 'success'" :label="grp.nitsTotal || '0'" />
           </div>
         </div>
@@ -121,31 +134,42 @@
               <span class="font-semibold">{{ task.title }}</span>
               <div class="flex-auto" />
               <UIcon v-if="task.state === 'pending'" name="i-lucide-circle-dashed" class="animate-spin mr-2" />
-              <span v-if="siteStore.showPerf && task.state === 'completed'" class="text-xs mr-2 text-black/60 dark:text-white/60">{{ task.perf }} ms</span>
+              <span v-if="siteStore.showPerf && task.state === 'completed'" class="hidden md:block text-xs mr-2 text-black/60 dark:text-white/60">{{ task.perf }} ms</span>
               <UBadge :variant="task.nits.length > 0 || task.state === 'failed' ? 'solid' : 'soft'" :color="task.nits.length > 0 || task.state === 'failed' ? 'error' : 'success'" :label="task.nits.length || '0'" />
             </div>
             <div v-if="task.state === 'completed' && task.nits.length > 0" class="flex flex-col gap-2 bg-error-500/20 py-2 px-2 text-sm">
               <div v-for="(nit, idx) of task.nits" :key="idx" class="bg-white/50 dark:bg-black/20 rounded-md p-4">
-                <div class="flex items-center justify-between">
+                <!-- Mobile View -->
+                <div v-if="viewport.isLessThan('tablet')" class="flex flex-col">
                   <div class="flex items-center">
                     <UBadge :label="getNitType(nit).name" variant="soft" :color="getNitType(nit).color" class="mr-2 font-bold" />
-                    <UBadge :label="nit.name" variant="soft" color="error" class="mr-2 text-error-800 dark:text-error-200" />
-                    {{ nit.message }}
+                    <UBadge :label="nit.name" variant="soft" color="error" class="mr-2 text-error-800 dark:text-error-200 truncate" />
                   </div>
-                  <UButton v-if="nit.refUrl" :to="nit.refUrl" target="_blank" label="Reference" variant="subtle" color="neutral" icon="i-lucide-book-text" trailing-icon="i-lucide-arrow-up-right" />
+                  <div class="mt-2">{{ nit.message }}</div>
                 </div>
-                <div v-if="nit.lines" class="flex items-center gap-2 mt-2 pl-2">
-                  <span class="text-error-600 dark:text-error-100 text-xs">LINES |</span>
-                  <UBadge v-for="(ln, lnIdx) of nit.lines" :key="lnIdx" size="sm" class="bg-black/50 text-white dark:text-error-100" :label="'Ln ' + ln.line + ', Col ' + ln.pos" />
-                </div>
-                <div v-if="nit.path" class="flex items-center mt-2 pl-2">
-                  <span class="text-error-600 dark:text-error-100 text-xs mr-1">PATH |</span>
-                  <UBadge class="font-mono bg-black/50 text-white dark:text-error-100" :label="nit.path" />
-                </div>
-                <div v-if="nit.text" class="flex items-center mt-2 pl-2">
-                  <span class="text-error-600 dark:text-error-100 text-xs mr-1">TEXT |</span>
-                  <div class="font-mono">{{ nit.text }}</div>
-                </div>
+                <!-- Desktop view -->
+                <template v-else>
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center pr-2">
+                      <UBadge :label="getNitType(nit).name" variant="soft" :color="getNitType(nit).color" class="mr-2 font-bold" />
+                      <UBadge :label="nit.name" variant="soft" color="error" class="mr-2 text-error-800 dark:text-error-200" />
+                      <span>{{ nit.message }}</span>
+                    </div>
+                    <UButton v-if="nit.refUrl" :to="nit.refUrl" target="_blank" label="Ref" variant="subtle" color="neutral" icon="i-lucide-book-text" trailing-icon="i-lucide-arrow-up-right" />
+                  </div>
+                  <div v-if="nit.lines" class="flex items-center gap-2 mt-2 pl-2">
+                    <span class="text-error-600 dark:text-error-100 text-xs">LINES |</span>
+                    <UBadge v-for="(ln, lnIdx) of nit.lines" :key="lnIdx" size="sm" class="bg-black/50 text-white dark:text-error-100" :label="'Ln ' + ln.line + ', Col ' + ln.pos" />
+                  </div>
+                  <div v-if="nit.path" class="flex items-center mt-2 pl-2">
+                    <span class="text-error-600 dark:text-error-100 text-xs mr-1">PATH |</span>
+                    <UBadge class="font-mono bg-black/50 text-white dark:text-error-100" :label="nit.path" />
+                  </div>
+                  <div v-if="nit.text" class="flex items-center mt-2 pl-2">
+                    <span class="text-error-600 dark:text-error-100 text-xs mr-1">TEXT |</span>
+                    <div class="font-mono">{{ nit.text }}</div>
+                  </div>
+                </template>
               </div>
             </div>
           </div>
@@ -163,6 +187,7 @@ definePageMeta({
   middleware: ['results']
 })
 
+const viewport = useViewport()
 const siteStore = useSiteStore()
 
 const validationModes = {
