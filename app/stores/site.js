@@ -43,7 +43,7 @@ export const useSiteStore = defineStore('site', {
         options: {
           allowedDomains: ALLOWED_DOMAINS_DEFAULT,
           mode: this.mode,
-          offline: true, // this.offline,
+          offline: this.offline,
           year: this.useCurrentYear ? new Date().getFullYear() : this.customYear
         }
       }

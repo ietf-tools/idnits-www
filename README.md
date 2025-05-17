@@ -11,7 +11,7 @@
     
 </div>
 
-- [**Production Website**](https://idnits.ietf.org)
+- [**Production Website**](https://author-tools.ietf.org/idnits3/)
 
 # Development
 
