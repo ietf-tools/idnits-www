@@ -1,5 +1,5 @@
 {
-  "name": "idnits-web",
+  "name": "idnits-www",
   "description": "Run idnits in-browser",
   "private": true,
   "type": "module",

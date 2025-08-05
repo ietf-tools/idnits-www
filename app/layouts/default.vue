@@ -114,7 +114,7 @@ const links = [[{
 }], [{
   label: 'Feedback',
   icon: 'i-lucide-message-circle',
-  to: 'https://github.com/ietf-tools/idnits-www',
+  to: 'https://github.com/ietf-tools/idnits/issues',
   target: '_blank'
 }, {
   label: 'Help & Support',
